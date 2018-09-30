@@ -1,5 +1,7 @@
 package edu.sky.luncher.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 
@@ -14,6 +16,7 @@ public class Meal extends AbstractBaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
+    @JsonIgnore
     private Restaurant restaurant;
 
 

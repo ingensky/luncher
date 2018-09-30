@@ -1,6 +1,7 @@
 package edu.sky.luncher.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -18,6 +19,7 @@ public class VotingHistory extends AbstractBaseEntity {
     private LocalDate date;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+    @DateTimeFormat(pattern = "HH:mm")
     private LocalTime time;
 
     @OneToOne

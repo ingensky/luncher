@@ -8,6 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/rating")
 public class RatingController {
@@ -21,8 +23,9 @@ public class RatingController {
 
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestaurantWithLunchMenu> getAll() {
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<List<RestaurantWithLunchMenu>> getAll() {
+        List<RestaurantWithLunchMenu> all = ratingService.getAll();
+        return new ResponseEntity<>(all, HttpStatus.OK);
     }
 
 

@@ -82,7 +82,7 @@ public class AdminController {
             @PathVariable("id_rest") Long restaurantId,
             @PathVariable("id_meal") Long mealId
     ) {
-        mealRepository.delete(mealId);
+//        mealRepository.delete(mealId);
     }
 
     @GetMapping(value = "/restaurant/**/meal/{id_meal}", produces = MediaType.APPLICATION_JSON_VALUE)

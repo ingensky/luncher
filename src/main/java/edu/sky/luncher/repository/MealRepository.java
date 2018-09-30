@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MealRepository extends JpaRepository<Meal, Long> {
 
-    void delete(Long mealId);
+//    void delete(Long mealId);
 }

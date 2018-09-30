@@ -8,6 +8,7 @@ import edu.sky.luncher.repository.VotingHistoryRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -29,7 +30,7 @@ public class RatingService {
 
 
     public List<RestaurantWithLunchMenu> getAll() {
-        return null;
+        return restaurantRepository.retrieveRestaurantsWithLunchMenu(LocalDate.now());
     }
 
     public void vote() {
@@ -38,7 +39,7 @@ public class RatingService {
 
     @Scheduled(cron = "${cron.expression}")
     public void updateHistory() {
-
+        System.out.println("Sceduled thing trying to start");
     }
 
 }
