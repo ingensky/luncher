@@ -1,6 +1,7 @@
 package edu.sky.luncher.repository;
 
 import edu.sky.luncher.domain.Restaurant;
+import edu.sky.luncher.domain.User;
 import edu.sky.luncher.dto.RestaurantWithLunchMenu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +14,7 @@ import java.util.Optional;
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     Restaurant findByName(String name);
 
-    Restaurant findByAdministratorsContains(Long id);
+    Restaurant findByAdministratorsContains(User user);
 
     Optional<Restaurant> findById(Long id);
 
