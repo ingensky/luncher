@@ -61,7 +61,6 @@ public class Restaurant extends AbstractBaseEntity {
     public String toString() {
         return "Restaurant{" +
                 "name='" + name + '\'' +
-                ", administrationPassword='" + administrationPassword + '\'' +
                 ", administrators=" + administrators +
                 ", id=" + id +
                 '}';

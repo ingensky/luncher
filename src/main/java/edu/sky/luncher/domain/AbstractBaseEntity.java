@@ -1,6 +1,7 @@
 package edu.sky.luncher.domain;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import edu.sky.luncher.domain.util.Views;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;

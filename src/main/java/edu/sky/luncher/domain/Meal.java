@@ -14,9 +14,8 @@ public class Meal extends AbstractBaseEntity {
 
     private Long price;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
-    @JsonIgnore
     private Restaurant restaurant;
 
 

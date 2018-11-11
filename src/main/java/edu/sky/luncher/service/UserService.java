@@ -21,7 +21,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByLogin(username);
+        return userRepository.findByUsername(username);
     }
 
 
@@ -35,7 +35,7 @@ public class UserService implements UserDetailsService {
     }
 
     private User addCommonUser(User user, Set<Role> roles) {
-        User userFromDb = userRepository.findByLogin(user.getUsername());
+        User userFromDb = userRepository.findByUsername(user.getUsername());
         if (userFromDb != null) {
             return null;
         }

@@ -17,20 +17,13 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-//@JsonIgnoreProperties(ignoreUnknown = true)
 @Access(AccessType.FIELD)
-//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE)
 public class User extends AbstractBaseEntity implements UserDetails, Serializable {
 
-//    @NotBlank
-//    @Size(min = 2, max = 100)
-    @Column(name = "login", nullable = false)
-    @JsonView(Views.Name.class)
-    private String login;
+    @Column(name = "username", nullable = false)
+    private String username;
 
     @Column(name = "password", nullable = false)
-//    @NotBlank
-//    @Size(min = 5, max = 100)
     private String password;
 
 
@@ -38,26 +31,24 @@ public class User extends AbstractBaseEntity implements UserDetails, Serializabl
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     @BatchSize(size = 200)
-    @JsonIgnore
-//    @Column(name = "roles")
     private Set<Role> roles;
 
     public User() {
     }
 
-    public User(Long id, @NotBlank @Size(min = 2, max = 100) String login, @NotBlank @Size(min = 2, max = 100) String password, Set<Role> roles) {
+    public User(Long id, @NotBlank @Size(min = 2, max = 100) String username, @NotBlank @Size(min = 2, max = 100) String password, Set<Role> roles) {
         super(id);
-        this.login = login;
+        this.username = username;
         this.password = password;
         this.roles = roles;
     }
 
     public String getLogin() {
-        return login;
+        return username;
     }
 
     public void setLogin(String login) {
-        this.login = login;
+        this.username = username;
     }
 
     public void setPassword(String password) {
@@ -75,8 +66,9 @@ public class User extends AbstractBaseEntity implements UserDetails, Serializabl
     @Override
     public String toString() {
         return "User{" +
-                "login='" + login + '\'' +
-                ", password='" + password + '\'' +
+                "username='" + username + '\'' +
+                ", roles=" + roles +
+                ", id=" + id +
                 '}';
     }
 
@@ -91,7 +83,7 @@ public class User extends AbstractBaseEntity implements UserDetails, Serializabl
 
     @Override
     public String getUsername() {
-        return login;
+        return username;
     }
 
     @Override

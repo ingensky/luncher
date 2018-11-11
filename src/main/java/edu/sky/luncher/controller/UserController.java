@@ -3,7 +3,7 @@ package edu.sky.luncher.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.sky.luncher.domain.Restaurant;
 import edu.sky.luncher.domain.User;
-import edu.sky.luncher.domain.Views;
+import edu.sky.luncher.domain.util.Views;
 import edu.sky.luncher.repository.RestaurantRepository;
 import edu.sky.luncher.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

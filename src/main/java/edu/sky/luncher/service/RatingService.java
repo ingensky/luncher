@@ -7,12 +7,15 @@ import edu.sky.luncher.repository.VoteRepository;
 import edu.sky.luncher.repository.VotingHistoryRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
 public class RatingService {
+    private static LocalTime updatePoint;
 
     private RestaurantRepository restaurantRepository;
     private LunchMenuRepository lunchMenuRepository;
@@ -38,7 +41,10 @@ public class RatingService {
     }
 
     @Scheduled(cron = "${cron.expression}")
+    @Transactional
     public void updateHistory() {
+        updatePoint = LocalTime.now();
+
         System.out.println("Sceduled thing trying to start");
     }
 

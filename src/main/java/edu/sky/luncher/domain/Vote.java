@@ -10,25 +10,17 @@ import java.time.LocalTime;
 
 @Entity
 @Table
-public class Vote  {
-
-    @Id
-    private Long id;
+public class Vote extends AbstractBaseEntity {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
-    @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime time;
-
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @MapsId
     private User user;
 
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
@@ -36,10 +28,8 @@ public class Vote  {
     public Vote() {
     }
 
-    public Vote(Long id, LocalDate date, LocalTime time, User user, Restaurant restaurant) {
-        this.id = id;
+    public Vote(LocalDate date, User user, Restaurant restaurant) {
         this.date = date;
-        this.time = time;
         this.user = user;
         this.restaurant = restaurant;
     }
@@ -50,14 +40,6 @@ public class Vote  {
 
     public void setDate(LocalDate date) {
         this.date = date;
-    }
-
-    public LocalTime getTime() {
-        return time;
-    }
-
-    public void setTime(LocalTime time) {
-        this.time = time;
     }
 
     public User getUser() {
@@ -74,5 +56,15 @@ public class Vote  {
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+    }
+
+    @Override
+    public String toString() {
+        return "Vote{" +
+                "date=" + date +
+                ", user=" + user +
+                ", restaurant=" + restaurant +
+                ", id=" + id +
+                '}';
     }
 }
