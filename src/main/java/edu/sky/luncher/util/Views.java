@@ -1,4 +1,4 @@
-package edu.sky.luncher.domain.util;
+package edu.sky.luncher.util;
 
 public class Views {
     public interface Id {}

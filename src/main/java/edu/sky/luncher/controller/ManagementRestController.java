@@ -9,18 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static edu.sky.luncher.util.Util.getUri;
+
 @RestController
 @RequestMapping(ManagementRestController.REST_URL)
+@PreAuthorize("hasRole('MANAGER')")
 public class ManagementRestController {
     static final String REST_URL = "/restaurants";
 
@@ -44,12 +46,7 @@ public class ManagementRestController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> createRestaurant(@RequestBody Restaurant restaurant) {
         Restaurant created = restaurantRepository.save(restaurant);
-
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
-                .buildAndExpand(created.getId()).toUri();
-
-        return ResponseEntity.created(uriOfNewResource).body(created);
+        return ResponseEntity.created(getUri(created.getId(), REST_URL)).body(created);
     }
 
     @PutMapping(value = "/{restaurant_id}/admin")
