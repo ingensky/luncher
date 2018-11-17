@@ -1,21 +1,28 @@
 package edu.sky.luncher.dto;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import edu.sky.luncher.domain.LunchMenu;
+import edu.sky.luncher.util.Views;
 
 public class RestaurantWithLunchMenu {
 
+    @JsonView(Views.Id.class)
     private Long restaurantId;
 
-    private String restaurantName;
+    @JsonView(Views.Name.class)
+    private String name;
 
+
+    @JsonView(Views.Body.class)
     private LunchMenu lunchMenu;
 
+    @JsonView(Views.Body.class)
     private long rating;
 
     public RestaurantWithLunchMenu(Long restaurantId, String restaurantName,
                                    LunchMenu lunchMenu, long rating) {
         this.restaurantId = restaurantId;
-        this.restaurantName = restaurantName;
+        this.name = restaurantName;
         this.lunchMenu = lunchMenu;
         this.rating = rating;
     }
@@ -28,12 +35,12 @@ public class RestaurantWithLunchMenu {
         this.restaurantId = restaurantId;
     }
 
-    public String getRestaurantName() {
-        return restaurantName;
+    public String getName() {
+        return name;
     }
 
-    public void setRestaurantName(String restaurantName) {
-        this.restaurantName = restaurantName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LunchMenu getLunchMenu() {

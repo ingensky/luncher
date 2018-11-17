@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
+import edu.sky.luncher.util.Views;
 import org.hibernate.annotations.BatchSize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,7 @@ import java.util.Set;
 public class User extends AbstractBaseEntity implements UserDetails, Serializable {
 
     @Column(name = "username", nullable = false)
+    @JsonView(Views.Name.class)
     private String username;
 
     @Column(name = "password", nullable = false)

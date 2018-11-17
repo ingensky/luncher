@@ -6,7 +6,7 @@ INSERT INTO users (ID, username, PASSWORD) VALUES
   (100, 'u', 'u'),
   (101, 'a', 'a'),
   (102, 'a2', 'a2'),
-  (103, 'man', 'm');
+  (103, 'm', 'm');
 
 INSERT INTO ADMINISTRATORS (RESTAURANT_ID, USER_ID) VALUES
   (200, 101),

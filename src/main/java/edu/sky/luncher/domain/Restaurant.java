@@ -1,12 +1,16 @@
 package edu.sky.luncher.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
+import edu.sky.luncher.util.Views;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 public class Restaurant extends AbstractBaseEntity {
 
+    @JsonView(Views.Name.class)
     private String name;
 
     @OneToMany

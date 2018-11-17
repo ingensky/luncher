@@ -2,6 +2,8 @@ package edu.sky.luncher.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import edu.sky.luncher.util.Views;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -12,11 +14,13 @@ import java.util.Set;
 @Table
 public class LunchMenu extends AbstractBaseEntity {
 
+    @JsonView(Views.Name.class)
     private String name;
 
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "lunch_menu_id")
+    @JsonView(Views.Body.class)
     private Set<Meal> menuItems;
 
 

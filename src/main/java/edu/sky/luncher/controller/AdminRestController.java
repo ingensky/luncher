@@ -61,7 +61,7 @@ public class AdminRestController {
 
 
     @PostMapping(
-            value = "/{restaurant}/meal",
+            value = "/{restaurant}/lunchMenu",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )

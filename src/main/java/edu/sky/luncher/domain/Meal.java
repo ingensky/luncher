@@ -1,6 +1,7 @@
 package edu.sky.luncher.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import edu.sky.luncher.util.Views;
 
 import javax.persistence.*;
 
@@ -10,8 +11,10 @@ import javax.persistence.*;
 public class Meal extends AbstractBaseEntity {
 
 
+    @JsonView(Views.Name.class)
     private String name;
 
+    @JsonView(Views.Body.class)
     private Long price;
 
     @ManyToOne(fetch = FetchType.LAZY)
