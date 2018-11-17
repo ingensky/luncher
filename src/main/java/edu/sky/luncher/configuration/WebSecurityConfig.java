@@ -1,60 +1,51 @@
 package edu.sky.luncher.configuration;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Bean;
+import edu.sky.luncher.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final UserService userService;
+
+    @Autowired
+    public WebSecurityConfig(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .antMatcher("/**")
                 .authorizeRequests()
-                .antMatchers("/", "/rating/**").permitAll()
-                .anyRequest().authenticated()
+                    .antMatchers("/").permitAll()
+                    .antMatchers("/restaurants/**").access("hasRole('ROLE_MANAGER')")
+//                    .antMatchers("/administration/**").access("hasRole('ROLE_ADMIN')")
+                    .anyRequest().authenticated()
                 .and()
-                .csrf().disable();
-//                .formLogin()
-////                    .loginPage("/login")
-//                    .permitAll()
-//                .and()
-//                    .logout()
-//                    .permitAll();
+                    .csrf().disable()
+//        https://stackoverflow.com/a/41568011/7667017
+                    .httpBasic()
+                .and()
+                    .logout()
+                    .permitAll();
     }
 
-    @Bean
     @Override
-    public UserDetailsService userDetailsService() {
-        UserDetails user =
-                User.withDefaultPasswordEncoder()
-                        .username("u")
-                        .password("u")
-                        .roles("USER")
-                        .build();
-        UserDetails admin =
-                User.withDefaultPasswordEncoder()
-                        .username("a")
-                        .password("a")
-                        .roles("USER", "ADMIN")
-                        .build();
-
-        UserDetails manager =
-                User.withDefaultPasswordEncoder()
-                        .username("m")
-                        .password("m")
-                        .roles("USER", "ADMIN", "MANAGER")
-                        .build();
-
-        return new InMemoryUserDetailsManager(user, admin, manager);
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService)
+                .passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
+
 }

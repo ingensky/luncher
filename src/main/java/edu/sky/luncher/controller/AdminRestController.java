@@ -19,7 +19,7 @@ import static edu.sky.luncher.util.Util.getUri;
 
 @RestController
 @RequestMapping(AdminRestController.REST_URL)
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class AdminRestController {
 
     static final String REST_URL = "/administration";

@@ -22,7 +22,7 @@ import static edu.sky.luncher.util.Util.getUri;
 
 @RestController
 @RequestMapping(ManagementRestController.REST_URL)
-@PreAuthorize("hasRole('MANAGER')")
+//@PreAuthorize("hasRole('ROLE_MANAGER')")
 public class ManagementRestController {
     static final String REST_URL = "/restaurants";
 
@@ -57,7 +57,7 @@ public class ManagementRestController {
             @PathVariable("restaurant_id") Restaurant restaurant
     ) {
         User createdUser = userRepository.save(user);
-        createdUser.setRoles(Stream.of(Role.USER, Role.ADMIN)
+        createdUser.setRoles(Stream.of(Role.ROLE_USER, Role.ROLE_ADMIN)
                 .collect(Collectors.toCollection(HashSet::new)));
         restaurant.getAdministrators().add(createdUser);
     }

@@ -15,8 +15,12 @@ import java.util.*;
 @Service
 public class UserService implements UserDetailsService {
 
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
 
     @Override
@@ -26,11 +30,11 @@ public class UserService implements UserDetailsService {
 
 
     public User addUser(User user) {
-        return addCommonUser(user, Collections.singleton(Role.USER));
+        return addCommonUser(user, Collections.singleton(Role.ROLE_USER));
     }
 
     public User addAdmin(User user) {
-        return addCommonUser(user, new HashSet<>(Arrays.asList(Role.ADMIN, Role.USER)));
+        return addCommonUser(user, new HashSet<>(Arrays.asList(Role.ROLE_ADMIN, Role.ROLE_USER)));
 
     }
 
