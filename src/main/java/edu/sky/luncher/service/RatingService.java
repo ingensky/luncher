@@ -37,7 +37,7 @@ public class RatingService {
     }
 
     public void vote(Restaurant restaurant, User user) {
-        if (LocalTime.now().isBefore(LocalTime.of(11, 0))) {
+        if (LocalTime.now().isBefore(LocalTime.of(23, 0))) {
             Vote vote = new Vote(LocalDate.now(), user, restaurant);
             voteRepository.save(vote);
         } else throw new VoteUnavailableException("You can't vote after 11:00 AM");

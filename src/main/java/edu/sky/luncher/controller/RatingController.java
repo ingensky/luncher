@@ -42,7 +42,7 @@ public class RatingController {
             @AuthenticationPrincipal User user
     ) {
         ratingService.vote(restaurant, user);
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

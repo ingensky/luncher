@@ -1,10 +1,13 @@
 package edu.sky.luncher.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import edu.sky.luncher.domain.Restaurant;
 import edu.sky.luncher.domain.Role;
 import edu.sky.luncher.domain.User;
 import edu.sky.luncher.repository.RestaurantRepository;
 import edu.sky.luncher.repository.UserRepository;
+import edu.sky.luncher.util.Views;
+import edu.sky.luncher.util.exception.IllegalRequestDataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +42,7 @@ public class ManagementRestController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @JsonView(Views.Body.class)
     public List<Restaurant> getAll() {
         return restaurantRepository.findAll();
     }
@@ -49,10 +54,9 @@ public class ManagementRestController {
         return ResponseEntity.created(getUri(created.getId(), REST_URL)).body(created);
     }
 
-    @PutMapping(value = "/{restaurant_id}/admin")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @PutMapping(value = "/{restaurant_id}/admin", produces =MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public void addAdmin(
+    public User addAdmin(
             @RequestBody User user,
             @PathVariable("restaurant_id") Restaurant restaurant
     ) {
@@ -60,16 +64,19 @@ public class ManagementRestController {
         createdUser.setRoles(Stream.of(Role.ROLE_USER, Role.ROLE_ADMIN)
                 .collect(Collectors.toCollection(HashSet::new)));
         restaurant.getAdministrators().add(createdUser);
+        return createdUser;
     }
 
-    @PutMapping(value = "/{restaurant_id}/admin/{user_id}")
+    @DeleteMapping(value = "/{restaurant_id}/admin/{user_id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @Transactional
-    public void addAdmin(
-            @PathVariable("restaurant_id") Restaurant restaurant,
-            @PathVariable("user_id") User user
+    public void removeAdmin(
+            @PathVariable("restaurant_id") @NotNull Restaurant restaurant,
+            @PathVariable("user_id") @NotNull User user
     ) {
-        restaurant.getAdministrators().remove(user);
+        if (restaurant.getAdministrators().contains(user)) {
+            restaurant.getAdministrators().remove(user);
+        } else throw new IllegalRequestDataException("This administrator doesn't belong to this restaurant.");
     }
 
 
