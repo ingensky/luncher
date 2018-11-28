@@ -30,7 +30,7 @@ public class RatingController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @JsonView(Views.Body.class)
     public ResponseEntity<List<RestaurantWithLunchMenu>> getAll() {
-        List<RestaurantWithLunchMenu> all = ratingService.getAll();
+        List<RestaurantWithLunchMenu> all = ratingService.getAllForToday();
         return new ResponseEntity<>(all, HttpStatus.OK);
     }
 

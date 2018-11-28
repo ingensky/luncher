@@ -3,6 +3,7 @@ package edu.sky.luncher.service;
 import edu.sky.luncher.domain.Restaurant;
 import edu.sky.luncher.domain.User;
 import edu.sky.luncher.domain.Vote;
+import edu.sky.luncher.domain.VotingHistory;
 import edu.sky.luncher.domain.dto.RestaurantWithLunchMenu;
 import edu.sky.luncher.repository.LunchMenuRepository;
 import edu.sky.luncher.repository.RestaurantRepository;
@@ -20,24 +21,29 @@ import java.util.List;
 @Service
 public class RatingService {
 
-    private static LocalTime updatePoint;
     private RestaurantRepository restaurantRepository;
+    private VotingHistoryRepository votingHistoryRepository;
     private VoteRepository voteRepository;
 
     public RatingService(RestaurantRepository restaurantRepository, LunchMenuRepository lunchMenuRepository,
                          VotingHistoryRepository votingHistoryRepository, VoteRepository voteRepository) {
         this.restaurantRepository = restaurantRepository;
+        this.votingHistoryRepository = votingHistoryRepository;
         this.voteRepository = voteRepository;
     }
 
 
-    public List<RestaurantWithLunchMenu> getAll() {
-        return restaurantRepository.getRestaurantWithLunchMenu(LocalDate.of(2018, 9, 30));
-//        return restaurantRepository.getRestaurantWithLunchMenu(LocalDate.now());
+    public List<RestaurantWithLunchMenu> getAllForToday() {
+        return getAll(LocalDate.now());
     }
 
+    public List<RestaurantWithLunchMenu> getAll(LocalDate date) {
+        return restaurantRepository.getRestaurantWithLunchMenu(date);
+    }
+
+
     public void vote(Restaurant restaurant, User user) {
-        if (LocalTime.now().isBefore(LocalTime.of(23, 0))) {
+        if (LocalTime.now().isBefore(LocalTime.of(11, 0))) {
             Vote vote = new Vote(LocalDate.now(), user, restaurant);
             voteRepository.save(vote);
         } else throw new VoteUnavailableException("You can't vote after 11:00 AM");
@@ -46,8 +52,12 @@ public class RatingService {
     @Scheduled(cron = "${cron.expression}")
     @Transactional
     public void updateHistory() {
-        updatePoint = LocalTime.now();
-        System.out.println("Sceduled thing trying to start");
+        getAllForToday().forEach(restaurantWithLunchMenu ->
+                votingHistoryRepository.save(new VotingHistory(
+                        LocalDate.now(),
+                        restaurantRepository.getById(restaurantWithLunchMenu.getRestaurantId()),
+                        (int) restaurantWithLunchMenu.getRating())));
     }
+
 
 }

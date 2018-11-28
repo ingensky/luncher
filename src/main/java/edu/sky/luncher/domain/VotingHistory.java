@@ -1,11 +1,9 @@
 package edu.sky.luncher.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 
 @Entity
@@ -22,6 +20,12 @@ public class VotingHistory extends AbstractBaseEntity {
     private Integer votes;
 
     public VotingHistory() {
+    }
+
+    public VotingHistory(LocalDate date, Restaurant restaurant, Integer votes) {
+        this.date = date;
+        this.restaurant = restaurant;
+        this.votes = votes;
     }
 
     public LocalDate getDate() {

@@ -75,6 +75,7 @@ public class AdminRestController {
             @RequestBody(required = false) LunchMenu lunchMenu
     ) {
         checkAccess(restaurant, user);
+        lunchMenu.setRestaurant(restaurant);
         LunchMenu created = lunchMenuRepository.save(lunchMenu);
         return ResponseEntity.created(getUri(created.getId(), REST_URL)).body(created);
     }

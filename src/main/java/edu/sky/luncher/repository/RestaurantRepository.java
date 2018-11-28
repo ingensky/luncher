@@ -20,6 +20,8 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
     Optional<Restaurant> findById(Long id);
 
+    Restaurant getById(Long id);
+
 
 
     @Query("SELECT DISTINCT NEW edu.sky.luncher.domain.dto.RestaurantWithLunchMenu(r.id, r.name, lm, vh.votes + COUNT(v)) FROM Restaurant r" +
