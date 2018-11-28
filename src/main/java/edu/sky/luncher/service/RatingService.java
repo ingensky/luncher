@@ -3,7 +3,7 @@ package edu.sky.luncher.service;
 import edu.sky.luncher.domain.Restaurant;
 import edu.sky.luncher.domain.User;
 import edu.sky.luncher.domain.Vote;
-import edu.sky.luncher.dto.RestaurantWithLunchMenu;
+import edu.sky.luncher.domain.dto.RestaurantWithLunchMenu;
 import edu.sky.luncher.repository.LunchMenuRepository;
 import edu.sky.luncher.repository.RestaurantRepository;
 import edu.sky.luncher.repository.VoteRepository;

@@ -1,5 +1,6 @@
 package edu.sky.luncher.domain;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.sky.luncher.util.Views;
 import org.springframework.data.domain.Persistable;
@@ -7,8 +8,12 @@ import org.springframework.data.domain.Persistable;
 import javax.persistence.*;
 import java.util.Objects;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+
 @MappedSuperclass
 @Access(AccessType.FIELD)
+@JsonAutoDetect(fieldVisibility = ANY, getterVisibility = NONE, isGetterVisibility = NONE, setterVisibility = NONE)
 public class AbstractBaseEntity implements Persistable<Long> {
 
     private static final int START_SEQ = 100000;

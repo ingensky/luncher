@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import edu.sky.luncher.domain.Restaurant;
 import edu.sky.luncher.domain.User;
 import edu.sky.luncher.domain.Vote;
-import edu.sky.luncher.dto.RestaurantWithLunchMenu;
+import edu.sky.luncher.domain.dto.RestaurantWithLunchMenu;
 import edu.sky.luncher.service.RatingService;
 import edu.sky.luncher.util.Views;
 import org.springframework.http.HttpStatus;

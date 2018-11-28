@@ -1,4 +1,4 @@
-package edu.sky.luncher.dto;
+package edu.sky.luncher.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.sky.luncher.domain.LunchMenu;

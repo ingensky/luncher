@@ -19,19 +19,5 @@ class AdminRestControllerTest {
     void getRestaurant() {
     }
 
-    @Test
-    void createMeal() {
-    }
 
-    @Test
-    void createLunchMenu() {
-    }
-
-    @Test
-    void addMealToLunchMenu() {
-    }
-
-    @Test
-    void removeMealFromLunchMenu() {
-    }
 }

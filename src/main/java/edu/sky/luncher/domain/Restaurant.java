@@ -22,16 +22,19 @@ public class Restaurant extends AbstractBaseEntity {
     private Set<User> administrators;
 
 
-    protected Restaurant() {
+    public Restaurant() {
     }
 
 
-    public Restaurant(Long id, String name, String administrationPassword, Set<User> administrators) {
+    public Restaurant(String name) {
+        this.name = name;
+    }
+
+    public Restaurant(Long id, String name, Set<User> administrators) {
         super(id);
         this.name = name;
         this.administrators = administrators;
     }
-
 
     public String getName() {
         return name;

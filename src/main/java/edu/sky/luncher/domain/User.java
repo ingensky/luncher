@@ -1,8 +1,5 @@
 package edu.sky.luncher.domain;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.sky.luncher.util.Views;
 import org.hibernate.annotations.BatchSize;
@@ -36,6 +33,11 @@ public class User extends AbstractBaseEntity implements UserDetails, Serializabl
     private Set<Role> roles;
 
     public User() {
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public User(Long id, @NotBlank @Size(min = 2, max = 100) String username, @NotBlank @Size(min = 2, max = 100) String password, Set<Role> roles) {
