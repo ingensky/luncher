@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static util.Util.asJsonString;
 
 
 @ExtendWith(SpringExtension.class)
@@ -51,10 +52,10 @@ class ManagementRestControllerTest {
 
     @Test
     @WithUserDetails("a")
-    void unauthorizedGetAll() throws Exception {
+    void accessDeniedGetAll() throws Exception {
         mockMvc.perform(get("/restaurants"))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
 
     }
 
@@ -96,10 +97,11 @@ class ManagementRestControllerTest {
 
     @Test
     void removeAdminFail() throws Exception {
-        NestedServletException thrownException = assertThrows(NestedServletException.class, () -> mockMvc.perform(
+        NestedServletException thrownException = assertThrows(NestedServletException.class,
+                () -> mockMvc.perform(
                 delete("/restaurants/201/admin/101"))
                 .andExpect(status().isNoContent()));
-        assertThat(thrownException.getCause() instanceof IllegalRequestDataException);
+        assertTrue(thrownException.getCause() instanceof IllegalRequestDataException);
     }
 
 
@@ -114,15 +116,6 @@ class ManagementRestControllerTest {
     }
 
 
-    /*
-     * converts a Java object into JSON representation
-     */
-    public static String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 
 }

@@ -58,6 +58,7 @@ public class AdminRestController {
             @RequestBody Meal meal
     ) {
         checkAccess(restaurant, user);
+        meal.setRestaurant(restaurant);
         Meal created = mealRepository.save(meal);
         return ResponseEntity.created(getUri(created.getId(), REST_URL)).body(created);
     }

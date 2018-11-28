@@ -25,6 +25,11 @@ public class Meal extends AbstractBaseEntity {
     public Meal() {
     }
 
+    public Meal(String name, Long price) {
+        this.name = name;
+        this.price = price;
+    }
+
     public String getName() {
         return name;
     }
