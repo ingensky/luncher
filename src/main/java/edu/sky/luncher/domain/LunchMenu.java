@@ -31,6 +31,7 @@ public class LunchMenu extends AbstractBaseEntity {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonView(Views.Body.class)
     private LocalDate date;
 
 

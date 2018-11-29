@@ -1,5 +1,6 @@
 package edu.sky.luncher.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import edu.sky.luncher.domain.LunchMenu;
 import edu.sky.luncher.domain.Meal;
 import edu.sky.luncher.domain.Restaurant;
@@ -8,6 +9,8 @@ import edu.sky.luncher.repository.LunchMenuRepository;
 import edu.sky.luncher.repository.MealRepository;
 import edu.sky.luncher.repository.RestaurantRepository;
 import edu.sky.luncher.service.UserService;
+import edu.sky.luncher.util.Views;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 
 import static edu.sky.luncher.util.Util.checkAccess;
@@ -64,18 +68,43 @@ public class AdminRestController {
     }
 
 
+    @GetMapping(
+            value = "/{restaurant}/lunchMenu/{lunchMenu}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @JsonView(Views.Body.class)
+    public LunchMenu getLunchMenu(
+            @PathVariable("restaurant") Restaurant restaurant,
+            @PathVariable("lunchMenu") LunchMenu lunchMenu,
+            @AuthenticationPrincipal User user
+    ) {
+        checkAccess(restaurant, user);
+        return lunchMenu;
+    }
+
     @PostMapping(
             value = "/{restaurant}/lunchMenu",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @JsonView(Views.Body.class)
     public ResponseEntity<LunchMenu> createLunchMenu(
             @PathVariable("restaurant") Restaurant restaurant,
             @AuthenticationPrincipal User user,
-            @RequestBody(required = false) LunchMenu lunchMenu
+            @RequestBody(required = false) LunchMenu lunchMenu,
+            @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
     ) {
         checkAccess(restaurant, user);
+        if (date == null) {
+            date = LocalDate.now();
+        }
+        LunchMenu byDate = lunchMenuRepository.findByDateAndRestaurant(date, restaurant);
+        if (byDate != null) {
+            lunchMenu.setId(byDate.getId());
+        }
         lunchMenu.setRestaurant(restaurant);
+        lunchMenu.setDate(date);
         LunchMenu created = lunchMenuRepository.save(lunchMenu);
         return ResponseEntity.created(getUri(created.getId(), REST_URL)).body(created);
     }
@@ -114,6 +143,7 @@ public class AdminRestController {
             lunchMenu.getMenuItems().remove(meal);
         }
     }
+
 
 
 
