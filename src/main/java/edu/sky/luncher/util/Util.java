@@ -1,11 +1,15 @@
 package edu.sky.luncher.util;
 
+import edu.sky.luncher.domain.LunchMenu;
+import edu.sky.luncher.domain.Meal;
 import edu.sky.luncher.domain.Restaurant;
 import edu.sky.luncher.domain.User;
 import edu.sky.luncher.util.exception.IllegalRequestDataException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Util {
 
@@ -22,5 +26,9 @@ public class Util {
         return ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(restUrl + "/{id}")
                 .buildAndExpand(id).toUri();
+    }
+
+    public static Map<String, Long> convertMealsToMap(LunchMenu lunchMenu) {
+        return lunchMenu.getMenuItems().stream().collect(Collectors.toMap(Meal::getName, Meal::getPrice));
     }
 }

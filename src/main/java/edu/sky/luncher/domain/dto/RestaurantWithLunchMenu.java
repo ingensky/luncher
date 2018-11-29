@@ -4,17 +4,23 @@ import com.fasterxml.jackson.annotation.JsonView;
 import edu.sky.luncher.domain.LunchMenu;
 import edu.sky.luncher.util.Views;
 
+import java.util.Map;
+
+import static edu.sky.luncher.util.Util.convertMealsToMap;
+
 public class RestaurantWithLunchMenu {
 
     @JsonView(Views.Id.class)
     private Long restaurantId;
 
     @JsonView(Views.Name.class)
-    private String name;
-
+    private String restaurantName;
 
     @JsonView(Views.Body.class)
-    private LunchMenu lunchMenu;
+    private String lunchMenuOfDay;
+
+    @JsonView(Views.Body.class)
+    private Map<String, Long> meals;
 
     @JsonView(Views.Body.class)
     private long rating;
@@ -22,10 +28,12 @@ public class RestaurantWithLunchMenu {
     public RestaurantWithLunchMenu(Long restaurantId, String restaurantName,
                                    LunchMenu lunchMenu, long rating) {
         this.restaurantId = restaurantId;
-        this.name = restaurantName;
-        this.lunchMenu = lunchMenu;
+        this.restaurantName = restaurantName;
+        this.lunchMenuOfDay = lunchMenu.getName();
+        this.meals = convertMealsToMap(lunchMenu);
         this.rating = rating;
     }
+
 
     public Long getRestaurantId() {
         return restaurantId;
@@ -35,20 +43,28 @@ public class RestaurantWithLunchMenu {
         this.restaurantId = restaurantId;
     }
 
-    public String getName() {
-        return name;
+    public String getRestaurantName() {
+        return restaurantName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
     }
 
-    public LunchMenu getLunchMenu() {
-        return lunchMenu;
+    public String getLunchMenuOfDay() {
+        return lunchMenuOfDay;
     }
 
-    public void setLunchMenu(LunchMenu lunchMenu) {
-        this.lunchMenu = lunchMenu;
+    public void setLunchMenuOfDay(String lunchMenuOfDay) {
+        this.lunchMenuOfDay = lunchMenuOfDay;
+    }
+
+    public Map<String, Long> getMeals() {
+        return meals;
+    }
+
+    public void setMeals(Map<String, Long> meals) {
+        this.meals = meals;
     }
 
     public long getRating() {

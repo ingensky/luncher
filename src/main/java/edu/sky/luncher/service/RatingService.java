@@ -34,9 +34,9 @@ public class RatingService {
 
 
     public List<RestaurantWithLunchMenu> getAllForToday() {
-        System.out.println();
         return getAll(LocalDate.now());
     }
+
 
     public List<RestaurantWithLunchMenu> getAll(LocalDate date) {
         return restaurantRepository.getRestaurantWithLunchMenu(date);
