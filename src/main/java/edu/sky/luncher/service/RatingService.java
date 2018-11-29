@@ -44,7 +44,7 @@ public class RatingService {
 
 
     public void vote(Restaurant restaurant, User user) {
-        if (LocalTime.now().isBefore(LocalTime.of(11, 0))) {
+        if (LocalTime.now().isBefore(LocalTime.of(23, 0))) {
             LocalDate date = LocalDate.now();
             Vote vote = new Vote(date, user, restaurant);
             Vote byDateAndUser = voteRepository.findByDateAndUser(date, user);
@@ -52,7 +52,8 @@ public class RatingService {
                 vote.setId(byDateAndUser.getId());
             }
             voteRepository.save(vote);
-        } else throw new VoteUnavailableException("You can't vote after 11:00 AM");
+        }
+//        else throw new VoteUnavailableException("You can't vote after 11:00 AM");
     }
 
     @Scheduled(cron = "${cron.expression}")

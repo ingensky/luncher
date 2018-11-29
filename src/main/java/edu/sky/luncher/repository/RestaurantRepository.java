@@ -26,8 +26,9 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
     @Query("SELECT DISTINCT NEW edu.sky.luncher.domain.dto.RestaurantWithLunchMenu(r.id, r.name, lm, COUNT(v)) " +
             "FROM Restaurant r " +
-            "INNER JOIN LunchMenu lm ON lm.restaurant.id = r.id AND lm.date = :date " +
-            "LEFT OUTER JOIN Vote v ON v.restaurant.id = r.id AND v.date = :date " +
+            "INNER JOIN FETCH LunchMenu lm " +
+            "ON lm.restaurant.id = r.id AND lm.date = :date " +
+            "LEFT JOIN FETCH Vote v ON v.restaurant.id = r.id AND v.date = :date " +
             "GROUP BY r.id ORDER BY 4 DESC")
     List<RestaurantWithLunchMenu> getRestaurantWithLunchMenu(@Param("date") LocalDate date);
 
