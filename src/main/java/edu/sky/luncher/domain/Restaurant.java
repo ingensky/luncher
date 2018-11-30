@@ -3,11 +3,14 @@ package edu.sky.luncher.domain;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.sky.luncher.util.Views;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Restaurant extends AbstractBaseEntity {
 
     @JsonView(Views.Name.class)
@@ -19,6 +22,7 @@ public class Restaurant extends AbstractBaseEntity {
             joinColumns = @JoinColumn(name = "restaurant_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
+    @JsonView(Views.Body.class)
     private Set<User> administrators;
 
 

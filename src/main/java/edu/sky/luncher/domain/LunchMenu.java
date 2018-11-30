@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.sky.luncher.util.Views;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -12,6 +13,8 @@ import java.util.Set;
 
 @Entity
 @Table
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class LunchMenu extends AbstractBaseEntity {
 
     @JsonView(Views.Name.class)
@@ -21,6 +24,7 @@ public class LunchMenu extends AbstractBaseEntity {
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "lunch_menu_id")
     @JsonView(Views.Body.class)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Meal> menuItems;
 
 
