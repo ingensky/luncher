@@ -25,8 +25,9 @@ public class RatingService {
     private VotingHistoryRepository votingHistoryRepository;
     private VoteRepository voteRepository;
 
-    public RatingService(RestaurantRepository restaurantRepository, LunchMenuRepository lunchMenuRepository,
-                         VotingHistoryRepository votingHistoryRepository, VoteRepository voteRepository) {
+    public RatingService(RestaurantRepository restaurantRepository,
+                         VotingHistoryRepository votingHistoryRepository,
+                         VoteRepository voteRepository) {
         this.restaurantRepository = restaurantRepository;
         this.votingHistoryRepository = votingHistoryRepository;
         this.voteRepository = voteRepository;
@@ -44,7 +45,7 @@ public class RatingService {
 
 
     public void vote(Restaurant restaurant, User user) {
-        if (LocalTime.now().isBefore(LocalTime.of(23, 0))) {
+        if (LocalTime.now().isBefore(LocalTime.of(11, 0))) {
             LocalDate date = LocalDate.now();
             Vote vote = new Vote(date, user, restaurant);
             Vote byDateAndUser = voteRepository.findByDateAndUser(date, user);

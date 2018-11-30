@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints =  @UniqueConstraint(columnNames = "username", name = "users_unique_username_idx"))
 @Access(AccessType.FIELD)
 public class User extends AbstractBaseEntity implements UserDetails, Serializable {
 

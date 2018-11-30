@@ -54,11 +54,11 @@ public class ManagementRestController {
         return ResponseEntity.created(getUri(created.getId(), REST_URL)).body(created);
     }
 
-    @PutMapping(value = "/{restaurant_id}/admin", produces =MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{restaurant}/admin", produces =MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public User addAdmin(
             @RequestBody User user,
-            @PathVariable("restaurant_id") Restaurant restaurant
+            @PathVariable("restaurant") Restaurant restaurant
     ) {
         User createdUser = userRepository.save(user);
         createdUser.setRoles(Stream.of(Role.ROLE_USER, Role.ROLE_ADMIN)
@@ -67,12 +67,12 @@ public class ManagementRestController {
         return createdUser;
     }
 
-    @DeleteMapping(value = "/{restaurant_id}/admin/{user_id}")
+    @DeleteMapping(value = "/{restaurant}/admin/{user}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @Transactional
     public void removeAdmin(
-            @PathVariable("restaurant_id") @NotNull Restaurant restaurant,
-            @PathVariable("user_id") @NotNull User user
+            @PathVariable("restaurant") @NotNull Restaurant restaurant,
+            @PathVariable("user") @NotNull User user
     ) {
         if (restaurant.getAdministrators().contains(user)) {
             restaurant.getAdministrators().remove(user);

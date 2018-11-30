@@ -19,12 +19,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/rating")
-public class RatingController {
+public class RatingRestController {
 
     private RatingService ratingService;
 
 
-    public RatingController(RatingService ratingService) {
+    public RatingRestController(RatingService ratingService) {
         this.ratingService = ratingService;
     }
 

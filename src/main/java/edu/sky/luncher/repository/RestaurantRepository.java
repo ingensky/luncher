@@ -14,16 +14,11 @@ import java.util.Optional;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
-
-    Restaurant findByName(String name);
-
     Restaurant findByAdministratorsContains(User user);
 
     Optional<Restaurant> findById(Long id);
 
     Restaurant getById(Long id);
-
-
 
     @Transactional
     @Query("SELECT DISTINCT NEW edu.sky.luncher.domain.dto.RestaurantWithLunchMenu(r.id, r.name, lm, COUNT(v)) " +
