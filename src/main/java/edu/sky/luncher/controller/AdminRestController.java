@@ -10,6 +10,7 @@ import edu.sky.luncher.repository.MealRepository;
 import edu.sky.luncher.repository.RestaurantRepository;
 import edu.sky.luncher.service.UserService;
 import edu.sky.luncher.util.Views;
+import edu.sky.luncher.util.exception.IllegalRequestDataException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,7 +20,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 
 import static edu.sky.luncher.util.Util.checkAccess;
 import static edu.sky.luncher.util.Util.getUri;
@@ -79,7 +79,7 @@ public class AdminRestController {
             @PathVariable("lunchMenu") LunchMenu lunchMenu,
             @AuthenticationPrincipal User user
     ) {
-        checkAccess(restaurant, user);
+        checkAccess(restaurant, user, lunchMenu);
         return lunchMenu;
     }
 
@@ -96,6 +96,9 @@ public class AdminRestController {
             @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
     ) {
         checkAccess(restaurant, user);
+        if (lunchMenu.getId() != null) {
+            throw new IllegalRequestDataException("Your lunch menu must be new");
+        }
         if (date == null) {
             date = LocalDate.now();
         }
@@ -110,6 +113,29 @@ public class AdminRestController {
     }
 
     @PutMapping(
+            value = "/{restaurant}/lunchMenu/{lunchMenu}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @JsonView(Views.Body.class)
+    public ResponseEntity<LunchMenu> updateLunchMenu(
+            @PathVariable("restaurant") Restaurant restaurant,
+            @AuthenticationPrincipal User user,
+            @RequestBody(required = false) LunchMenu lunchMenu,
+            @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @PathVariable("lunchMenu") LunchMenu lunchMenuFromDB) {
+        checkAccess(restaurant, user);
+        if (date == null) {
+            date = LocalDate.now();
+        }
+        lunchMenuFromDB.setRestaurant(lunchMenu.getRestaurant());
+        lunchMenuFromDB.setDate(date);
+        lunchMenuRepository.save(lunchMenuFromDB);
+        return ResponseEntity.created(getUri(lunchMenuFromDB.getId(), REST_URL)).body(lunchMenuFromDB);
+    }
+
+
+    @PutMapping(
             value = "/{restaurant}/lunchMenu/{lunchMenu}/{meal}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -120,8 +146,7 @@ public class AdminRestController {
             @PathVariable("lunchMenu") LunchMenu lunchMenu,
             @PathVariable("meal") Meal meal
     ) {
-        checkAccess(restaurant, user);
-        if (lunchMenu.getMenuItems() == null) lunchMenu.setMenuItems(new HashSet<>());
+        checkAccess(restaurant, user, meal);
         lunchMenu.getMenuItems().add(meal);
         return lunchMenu;
     }
@@ -138,7 +163,7 @@ public class AdminRestController {
             @PathVariable("lunchMenu") LunchMenu lunchMenu,
             @PathVariable("meal") Meal meal
     ) {
-        checkAccess(restaurant, user);
+        checkAccess(restaurant, user, meal);
         if (lunchMenu.getMenuItems() != null) {
             lunchMenu.getMenuItems().remove(meal);
         }

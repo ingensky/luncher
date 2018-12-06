@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Util {
@@ -18,6 +19,20 @@ public class Util {
 
     public static void checkAccess(Restaurant restaurant, User user) {
         if (!restaurant.getAdministrators().contains(user)) {
+            throw new IllegalRequestDataException("Access denied");
+        }
+    }
+
+    public static void checkAccess(Restaurant restaurant, User user, LunchMenu lunchMenu) {
+        if (!restaurant.getAdministrators().contains(user) ||
+                !Objects.equals(restaurant.getId(), lunchMenu.getRestaurant().getId())) {
+            throw new IllegalRequestDataException("Access denied");
+        }
+    }
+
+    public static void checkAccess(Restaurant restaurant, User user, Meal meal) {
+        if (!restaurant.getAdministrators().contains(user) ||
+                !Objects.equals(restaurant.getId(), meal.getRestaurant().getId())) {
             throw new IllegalRequestDataException("Access denied");
         }
     }

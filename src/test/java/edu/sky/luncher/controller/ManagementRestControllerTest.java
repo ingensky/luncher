@@ -1,7 +1,6 @@
 package edu.sky.luncher.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.sky.luncher.domain.Restaurant;
 import edu.sky.luncher.domain.User;
 import edu.sky.luncher.repository.RestaurantRepository;
@@ -22,7 +21,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.NestedServletException;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -79,8 +77,8 @@ class ManagementRestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(admin)))
                 .andExpect(status().isOk());
-        Restaurant byId = restaurantRepository.findById(201L).get();
-        assertTrue(byId.getAdministrators().contains(admin));
+        Restaurant restaurant = restaurantRepository.findById(201L).get();
+        assertTrue(restaurant.getAdministrators().contains(admin));
 
     }
 
@@ -90,8 +88,8 @@ class ManagementRestControllerTest {
         mockMvc.perform(
                 delete("/restaurants/200/admin/101"))
                 .andExpect(status().isNoContent());
-        Restaurant byId = restaurantRepository.findById(200L).get();
-        assertEquals(1, byId.getAdministrators().size());
+        Restaurant restaurant = restaurantRepository.findById(200L).get();
+        assertEquals(1, restaurant.getAdministrators().size());
 
     }
 

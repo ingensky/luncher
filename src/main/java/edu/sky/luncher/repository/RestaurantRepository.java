@@ -20,6 +20,9 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
     Restaurant getById(Long id);
 
+    /* Use only for development. To prevent high load on server
+    use in memory stored vote counter, ConcurrentHashMap for example
+     */
     @Transactional
     @Query("SELECT DISTINCT NEW edu.sky.luncher.domain.dto.RestaurantWithLunchMenu(r.id, r.name, lm, COUNT(v)) " +
             "FROM Restaurant r " +
